@@ -159,6 +159,8 @@ class Game:
     def draw_inventory(self, inventory, hand, hand_image, height):
         self.screen.blit(self.inventory_image, (0, 0))
         self.screen.blit(self.check, ((hand - 1)*self.TOOLS_INVENT_SIZE_X, 0))
+        if hand > 2:
+            return;
         for i in range(0, len(inventory)):
             if inventory[i] != 0:
                 self.screen.blit(self.tools_images[0][inventory[i] - 1], (i*self.TOOLS_INVENT_SIZE_X, 0))
@@ -285,13 +287,14 @@ class Game:
             
             if keys[pygame.K_8]:
                 self.player.change_hand(8)
-            
+                self.player.change_hand(8)
+
             if keys[pygame.K_9]:
                 self.player.change_hand(9)
             
             if keys[pygame.K_0]:
                 self.player.change_hand(10)
-            
+
                     
             if keys[pygame.K_ESCAPE]:
                 pygame.quit()

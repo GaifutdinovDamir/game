@@ -320,6 +320,8 @@ class Backpack:
             self.count.append(0)
             
     def add(self, type):
+        if abs(type) > 5:
+            return 0;
         if self.size - self.sizes[type - 1] < 0:
             return 0
         else:
