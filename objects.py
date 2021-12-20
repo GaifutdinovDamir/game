@@ -33,7 +33,6 @@ class Player:
         self.move_left_time = 0
         
         #Вспомогательные переменные
-        #dself.masturbation = 10
         self.sleep = 100/8
         self.hand = 1
         self.time = 0
