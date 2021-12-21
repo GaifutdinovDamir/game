@@ -1,36 +1,38 @@
 from random import randint
 import pygame
+from variables import *
+
  
 class Player:
     def __init__(self, pos_x, H_0, depth):
         #Состояние организма
-        self.health = 30
-        self.hunger = 20
-        self.fatigue = 50
-        self.thirst = 20
-        self.frostbite = 10
-        self.disease = 0
-        self.stage_of_disease = 0        
+        self.health = health
+        self.hunger = hunger
+        self.fatigue = fatigue
+        self.thirst = thirst
+        self.frostbite = frostbite
+        self.disease = disease
+        self.stage_of_disease = stage_of_disease
         
         #Координати игрока
-        self.pos_y = 0
+        self.pos_y = pos_y
         self.pos_x = pos_x
         
         #Размеры игрока
-        self.height = 100
-        self.widht = 35
+        self.height = height
+        self.widht = widht
         
         #Движение
-        self.speed = 1
-        self.jump_speed = 6
+        self.speed = speed
+        self.jump_speed = jump_speed
         self.acceleration = 3*self.jump_speed/20
         self.speed_of_jump = self.jump_speed
-        self.move_right = False
-        self.move_left = False
-        self.jump = False
-        self.right = True
-        self.move_right_time = 0
-        self.move_left_time = 0
+        self.move_right = move_right
+        self.move_left = move_left
+        self.jump = jump
+        self.right = right
+        self.move_right_time = move_right_time
+        self.move_left_time = move_left_time
         
         #Вспомогательные переменные
         self.sleep = 100/8
@@ -47,6 +49,7 @@ class Player:
         
         
     def jumping(self):
+        #озврат состояния прыжка
         if self.jump == False:
             self.jump = True
             self.new_y = self.pos_y
@@ -55,6 +58,7 @@ class Player:
                 
             
     def moving_right(self, bool):
+        #возврат состояния движения вправо
         if not self.move_right and bool:
             self.move_right = True
             self.right = True
@@ -68,6 +72,7 @@ class Player:
         
         
     def moving_left(self, bool):
+        #возврат состояния движения влево
         if not self.move_left and bool:
             self.move_left = True
             self.right = False
@@ -96,6 +101,7 @@ class Player:
    
                
     def jumping_right(self, bool, map):
+        #прыжок вправо при возможности. Изменение позиции
         if bool:
             if map[self.pos_y - int(self.H + 1)][int(self.pos_x + 2)] <= 0 and map[self.pos_y - int(self.H + 2)][int(self.pos_x + 2)] <= 0 and map[self.pos_y - int(self.H + 3)][int(self.pos_x + 2)] <= 0 and map[self.pos_y - int(self.H + 4)][int(self.pos_x + 2)] <= 0 and map[self.pos_y - int(self.H + 5)][int(self.pos_x + 2)] <= 0:
                 self.pos_x += self.speed
@@ -106,6 +112,7 @@ class Player:
     
                
     def jumping_left(self, bool, map):
+        #прыжок влево при возможности. Изменение позиции.
         if bool:
             if map[self.pos_y - int(self.H + 1)][int(self.pos_x - 1)] <= 0 and map[self.pos_y - int(self.H + 2)][int(self.pos_x - 1)] <= 0 and map[self.pos_y - int(self.H + 3)][int(self.pos_x - 1)] <= 0 and map[self.pos_y - int(self.H + 4)][int(self.pos_x - 1)] <= 0 and map[self.pos_y - int(self.H + 5)][int(self.pos_x - 1)] <= 0:
                 self.pos_x -= self.speed
@@ -116,20 +123,13 @@ class Player:
             
         
     def recalculation(self, map):
+        #проверки возможностей движения. И изменение координат.
         if self.move_left and not self.jump:
-            
             if map[self.pos_y - 1][int(self.pos_x) - 1] != 0:
-                if map[self.pos_y - 2][int(self.pos_x) - 1] != 0:
-                    self.move_left = False
-                elif map[self.pos_y - 3][int(self.pos_x) - 1] != 0:
-                    self.move_left = False
-                elif map[self.pos_y - 4][int(self.pos_x) - 1] != 0:
-                    self.move_left = False
-                elif map[self.pos_y - 5][int(self.pos_x) - 1] != 0:
-                    self.move_left = False
-                elif map[self.pos_y - 6][int(self.pos_x) - 1] != 0:
-                    self.move_left = False
-                elif map[self.pos_y - 6][int(self.pos_x)] != 0:
+                for i in range(1, 7):
+                    if map[self.pos_y - i][int(self.pos_x) - 1] != 0:
+                        self.move_left = False
+                if map[self.pos_y - 6][int(self.pos_x)] != 0:
                     self.move_left = False
                 elif map[self.pos_y - 6][int(self.pos_x) + 1] != 0:
                     self.move_left = False
@@ -140,15 +140,10 @@ class Player:
                     self.pos_x -= self.speed
                     
             else:
-                if map[self.pos_y - 1][int(self.pos_x) - 1] != 0:
-                    self.move_left = False
-                elif map[self.pos_y - 2][int(self.pos_x) - 1] != 0:
-                    self.move_left = False
-                elif map[self.pos_y - 3][int(self.pos_x) - 1] != 0:
-                    self.move_left = False
-                elif map[self.pos_y - 4][int(self.pos_x) - 1] != 0:
-                    self.move_left = False
-                elif map[self.pos_y - 5][int(self.pos_x) - 1] != 0:
+                for i in range(1, 5):
+                    if map[self.pos_y - i][int(self.pos_x) - 1] != 0:
+                        self.move_left = False
+                if map[self.pos_y - 5][int(self.pos_x) - 1] != 0:
                     self.move_left = False
                 else:
                     self.plate[1] = self.plate[0]
@@ -167,17 +162,10 @@ class Player:
         if self.move_right and not self.jump:
             
             if map[self.pos_y - 1][int(self.pos_x) + 2] != 0:
-                if map[self.pos_y - 2][int(self.pos_x) + 2] != 0:
-                    self.move_right = False
-                elif map[self.pos_y - 3][int(self.pos_x) + 2] != 0:
-                    self.move_right = False
-                elif map[self.pos_y - 4][int(self.pos_x) + 2] != 0:
-                    self.move_right = False
-                elif map[self.pos_y - 5][int(self.pos_x) + 2] != 0:
-                    self.move_right = False
-                elif map[self.pos_y - 6][int(self.pos_x) + 2] != 0:
-                    self.move_right = False
-                elif map[self.pos_y - 6][int(self.pos_x) + 1] != 0:
+                for i in range(1, 7):
+                    if map[self.pos_y - i][int(self.pos_x) + 2] != 0:
+                        self.move_right = False
+                if map[self.pos_y - 6][int(self.pos_x) + 1] != 0:
                     self.move_right = False
                 elif map[self.pos_y - 6][int(self.pos_x)] != 0:
                     self.move_right = False
@@ -188,15 +176,10 @@ class Player:
                     self.pos_y = min(self.plate)
                     
             else:
-                if map[self.pos_y - 1][int(self.pos_x) + 2] != 0:
-                    self.move_right = False
-                elif map[self.pos_y - 2][int(self.pos_x) + 2] != 0:
-                    self.move_right = False
-                elif map[self.pos_y - 3][int(self.pos_x) + 2] != 0:
-                    self.move_right = False
-                elif map[self.pos_y - 4][int(self.pos_x) + 2] != 0:
-                    self.move_right = False
-                elif map[self.pos_y - 5][int(self.pos_x) + 2] != 0:
+                for i in range(1, 5):
+                    if map[self.pos_y - i][int(self.pos_x) + 2] != 0:
+                        self.move_right = False
+                if map[self.pos_y - 5][int(self.pos_x) + 2] != 0:
                     self.move_right = False
                 else:
                     self.plate[0] = self.plate[1]
@@ -243,6 +226,7 @@ class Player:
         
         
     def draw(self):
+        #отрисовка
         if self.jump:
             if self.right:
                 self.hand_image = 1
@@ -279,6 +263,7 @@ class Player:
             
     
     def player_inventory(self):
+        #возврат переменных инвенторя
         return self.inventory, self.hand, self.hand_image, self.height
     
     
@@ -292,6 +277,7 @@ class Player:
     
     
     def checking(self, map):
+        #проверка на падение.
         if map[self.pos_y - 1][int(self.pos_x)] > 0 or map[self.pos_y - 1][int(self.pos_x) + 1] > 0:
             while map[self.pos_y - 1][int(self.pos_x)] > 0 or map[self.pos_y - 1][int(self.pos_x) + 1] > 0:
                 self.pos_y -= 1
